@@ -1,0 +1,9 @@
+filebeat.inputs:
+- type: log
+  paths:
+    - /var/log/execve.log
+  fields:
+    log_type: command_execution
+
+output.logstash:
+  hosts: ["192.168.25.150:5044"]
