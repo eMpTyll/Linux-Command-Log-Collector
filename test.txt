@@ -1,0 +1,17 @@
+# ExecuteCommandLogCollect
+gcc -shared -fPIC -o exec_logger.so exec_logger.c -ldl
+
+export LD_PRELOAD=/path/to/exec_logger.so
+
+echo 'export LD_PRELOAD=/path/to/exec_logger.so' >> /etc/profile
+
+sudo apt-get update
+sudo apt-get install auditd audispd-plugins
+
+Thêm một quy tắc audit để giám sát các lệnh thực thi. Mở tệp /etc/audit/rules.d/audit.rules và thêm dòng sau:
+-w /usr/bin/sudo -p x -k command_executions
+-w /bin/ -p x -k command_executions
+-w /usr/bin/ -p x -k command_executions
+-w /usr/sbin/ -p x -k command_executions
+
+sudo service auditd restart

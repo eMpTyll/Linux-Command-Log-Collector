@@ -1,15 +1,15 @@
 filebeat.inputs:
 - type: log
   paths:
-    - /var/log/audit/audit.log
-  fields:
-    log_type: auditd_command_execution
-
-- type: log
-  paths:
     - /var/log/execve.log
   fields:
     log_type: execve_command_execution
 
+- type: log
+  paths:
+    - /var/log/audit/audit.log
+  fields:
+    log_type: auditd_command_execution
+
 output.logstash:
-  hosts: ["logstash:5055"]
+  hosts: ["192.168.25.150:5055"]
