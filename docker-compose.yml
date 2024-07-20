@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.14.3
+    container_name: logstash-command-log
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "5044:5044"
+    networks:
+      - elk-default
+    depends_on:
+      - elasticsearch
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.14.3
+    container_name: filebeat-command-log
+    user: root
+    volumes:
+      - /var/log/execve.log:/var/log/execve.log
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+    networks:
+      - elk-default
+    depends_on:
+      - logstash
+
+networks:
+  elk-default:
+    external: true
