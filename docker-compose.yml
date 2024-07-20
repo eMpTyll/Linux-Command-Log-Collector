@@ -7,11 +7,9 @@ services:
     volumes:
       - ./logstash/pipeline:/usr/share/logstash/pipeline
     ports:
-      - "5044:5044"
+      - "5055:5055"
     networks:
-      - elk-default
-    depends_on:
-      - elasticsearch
+      - elk_default
 
   filebeat:
     image: docker.elastic.co/beats/filebeat:8.14.3
@@ -19,12 +17,11 @@ services:
     user: root
     volumes:
       - /var/log/execve.log:/var/log/execve.log
+      - /var/log/audit/audit.log:/var/log/audit/audit.log
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
-    networks:
-      - elk-default
     depends_on:
       - logstash
 
 networks:
-  elk-default:
+  elk_default:
     external: true
